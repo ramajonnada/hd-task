@@ -1,2 +1,8 @@
-
-
+<mat-stepper [linear]="true" #stepper animationDuration="1000">
+	<ng-container *ngFor="let step of steps">
+		<mat-step [stepControl]="step.stepFormGroup">
+			<ng-template matStepLabel>{{step.stepName}}</ng-template>
+			<app-step [step]="step"></app-step>
+		</mat-step>
+	</ng-container>
+</mat-stepper>
