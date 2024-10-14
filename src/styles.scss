@@ -7,7 +7,6 @@
 html,
 body,
 app-root {
-	height: 100%;
 	margin: 0;
 }
 
@@ -27,7 +26,13 @@ select {
 	outline: none;
 }
 
-label{
-	font-size: 12px;
+input[type="checkbox"] {
+	background-color: #fff;
+	width:16px;
+	height: 16px;
 }
 
+label {
+	font-size: 12px;
+	display: flex;
+}

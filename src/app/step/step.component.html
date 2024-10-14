@@ -9,13 +9,13 @@
 		</div>
 
 		<div class="buttons-container">
-			<button *ngIf="!step.isInitialStep" matStepperPrevious mat-flat-button>
+			<button *ngIf="!step.isInitialStep" (click)="$$previous()" matStepperPrevious mat-flat-button>
 				Back
 			</button>
-			<button *ngIf="!step.isFinalStep" [disabled]="!step.formGroup.valid" mat-flat-button matStepperNext>
+			<button *ngIf="!step.isFinalStep" (click)="$$next()" [disabled]="!step.formGroup.valid" mat-flat-button>
 				Next
 			</button>
-			<button *ngIf="step.isFinalStep" [disabled]="!step.formGroup.valid" mat-flat-button>
+			<button *ngIf="step.isFinalStep" mat-flat-button [disabled]="!step.formGroup.valid" (click)="$$submit()">
 				Submit
 			</button>
 			{{step.formGroup.valid}}
@@ -24,13 +24,22 @@
 		<ng-template #formGroup let-formFields="formFields">
 			<div class="fields">
 				<div *ngFor="let field of formFields" class="field">
-					<label [for]="field.fieldName">
-						{{ field.fieldLabel}}
-					</label>
-					<ng-container *ngIf="field.fieldType !== 'dropdown'">
+					<ng-container *ngIf="$$isInput(field)">
+						<label [for]="field.fieldName">
+							{{ field.fieldLabel}}
+						</label>
 						<input [type]="field.fieldType" [id]="field.fieldName" [formControlName]="field.fieldName">
 					</ng-container>
+					<ng-container *ngIf="field.fieldType === 'checkbox'">
+						<label [for]="field.fieldName">
+							<input type="checkbox" name="checkbox" [formControlName]="field.fieldName" />
+							{{ field.fieldLabel}}
+						</label>
+					</ng-container>
 					<ng-container *ngIf="field.fieldType === 'dropdown'">
+						<label [for]="field.fieldName">
+							{{ field.fieldLabel}}
+						</label>
 						<select [name]="field.fieldType" [formControlName]="field.fieldName">
 							<option value="" disabled selected>Select an option</option>
 							<ng-container *ngFor="let dv of field.dropdownValues">
@@ -63,6 +72,9 @@
 										</ng-container>
 									</select>
 								</ng-container>
+								<!-- <ng-container
+									*ngTemplateOutlet="formGroup; context: { formFields: step.fields}"></ng-container> -->
+
 							</div>
 						</div>
 						<button (click)="$$removeFormGroup(af.controlName,i)" mat-flat-button class="ex-button">

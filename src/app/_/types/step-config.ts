@@ -153,7 +153,7 @@ export const STEPS_CONFIG: FormStepMetaData[] = [
 				fieldName: 'terms&Conditions',
 				fieldLabel: 'Terms And Condtions',
 				fieldType: FieldType.Checkbox,
-				validators: [Validators.requiredTrue] // The user must check the checkbox to proceed
+				validators: [Validators.requiredTrue]
 			}
 		],
 		formGroup: new FormGroup({}),
