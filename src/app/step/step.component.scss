@@ -1,0 +1,42 @@
+:host {
+	height: 100%;
+	width: 100%;
+
+	.form {
+		padding: 8px;
+
+		.form-group {
+			width: 100%;
+		}
+
+		.form-array {
+			border: 1px solid black;
+			border-radius: 8px;
+			padding: 12px;
+			margin-top: 8px;
+		}
+
+		.ex-button {
+			margin-top: 8px;
+		}
+
+		.fields {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+
+			.field {
+				display: flex;
+				flex-direction: column;
+				margin-top: 4px;
+			}
+		}
+
+		.buttons-container {
+			width: 100%;
+			display: flex;
+			gap: 8px;
+			margin-top: 12px;
+		}
+	}
+}

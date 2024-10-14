@@ -1,29 +1,79 @@
-<ng-container *ngIf="step && step.stepFormGroup">
-	<form [formGroup]="step.stepFormGroup">
-		<div>
-			<ng-container *ngFor="let field of step.formFields">
-				<label [for]="field.controlName">
-					{{ field.controlName | titlecase }}
-				</label>
-				<ng-container *ngIf="field.controlType !== 'dropdown'">
-					<input [type]="field.controlType" [formControlName]="field.controlName">
-				</ng-container>
-				<ng-container *ngIf="field.controlType === 'dropdown'">
-					<select [name]="field.controlType" [formControlName]="field.controlName">
-						<option value="" disabled selected>Select an option</option>
-						<ng-container *ngFor="let dv of field.dropdownValues">
-							<option [value]="dv">{{dv}}</option>
-						</ng-container>
-					</select>
-				</ng-container>
+<ng-container *ngIf="step && step.formGroup">
+	<form [formGroup]="step.formGroup" class="form">
+		<div *ngIf="step.formType === 'FormArray'">
+			<ng-container *ngTemplateOutlet="formArray"></ng-container>
+		</div>
+
+		<div *ngIf="step.formType === 'FormGroup'" class="form-group">
+			<ng-container *ngTemplateOutlet="formGroup; context: { formFields: step.fields}"></ng-container>
+		</div>
+
+		<div class="buttons-container">
+			<button *ngIf="!step.isInitialStep" matStepperPrevious mat-flat-button>
+				Back
+			</button>
+			<button *ngIf="!step.isFinalStep" [disabled]="!step.formGroup.valid" mat-flat-button matStepperNext>
+				Next
+			</button>
+			<button *ngIf="step.isFinalStep" [disabled]="!step.formGroup.valid" mat-flat-button>
+				Submit
+			</button>
+			{{step.formGroup.valid}}
+		</div>
+
+		<ng-template #formGroup let-formFields="formFields">
+			<div class="fields">
+				<div *ngFor="let field of formFields" class="field">
+					<label [for]="field.fieldName">
+						{{ field.fieldLabel}}
+					</label>
+					<ng-container *ngIf="field.fieldType !== 'dropdown'">
+						<input [type]="field.fieldType" [id]="field.fieldName" [formControlName]="field.fieldName">
+					</ng-container>
+					<ng-container *ngIf="field.fieldType === 'dropdown'">
+						<select [name]="field.fieldType" [formControlName]="field.fieldName">
+							<option value="" disabled selected>Select an option</option>
+							<ng-container *ngFor="let dv of field.dropdownValues">
+								<option [value]="dv">{{dv}}</option>
+							</ng-container>
+						</select>
+					</ng-container>
+				</div>
+			</div>
+		</ng-template>
+
+		<ng-template #formArray>
+			<ng-container *ngFor="let af of step.formArrayFields">
+				<div [formArrayName]="af.controlName">
+					<div *ngFor="let control of $$getControls(af.controlName)?.controls; let i = index"
+						[formGroupName]="i" class="form-array">
+						<div class="fields">
+							<div *ngFor="let field of step.fields" class="field">
+								<label [for]="field.fieldName">
+									{{ field.fieldLabel}}
+								</label>
+								<ng-container *ngIf="field.fieldType !== 'dropdown'">
+									<input [type]="field.fieldType" [formControlName]="field.fieldName">
+								</ng-container>
+								<ng-container *ngIf="field.fieldType === 'dropdown'">
+									<select [name]="field.fieldType" [formControlName]="field.fieldName">
+										<option value="" disabled selected>Select an option</option>
+										<ng-container *ngFor="let dv of field.dropdownValues">
+											<option [value]="dv">{{dv}}</option>
+										</ng-container>
+									</select>
+								</ng-container>
+							</div>
+						</div>
+						<button (click)="$$removeFormGroup(af.controlName,i)" mat-flat-button class="ex-button">
+							Remove {{step.stepTitle}}
+						</button>
+					</div>
+				</div>
+				<button (click)="$$addFormGroup(af.controlName)" mat-flat-button class="ex-button">Add
+					{{step.stepTitle}}
+				</button>
 			</ng-container>
-		</div>
-		<div>
-			<button *ngIf="!step.isInitialStep" matStepperPrevious mat-raised-button>Back</button>
-			<button *ngIf="!step.isFinalStep" [disabled]="!step.stepFormGroup.valid" mat-flat-button
-				matStepperNext>Next</button>
-			<button *ngIf="step.isFinalStep" (click)="$$submit()" mat-flat-button>Submit</button>
-		</div>
-		{{step.stepFormGroup.valid}}
+		</ng-template>
 	</form>
 </ng-container>

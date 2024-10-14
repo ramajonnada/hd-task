@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-
+* {
+	box-sizing: border-box;
+}
 
 html,
 body,
@@ -12,3 +14,20 @@ app-root {
 body {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+input,
+select {
+	width: 240px;
+	height: 40px;
+	padding: 10px;
+	font-size: 12px;
+	margin-bottom: 8px;
+	border-radius: 5px;
+	border: 1px #ddd solid;
+	outline: none;
+}
+
+label{
+	font-size: 12px;
+}
+

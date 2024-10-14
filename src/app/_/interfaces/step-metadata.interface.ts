@@ -1,15 +1,19 @@
 import { FormGroup } from "@angular/forms";
-import { FormField } from "./form-field.interface";
+import { FormField } from "../types/form-field.interface";
+import { FormType } from "../enums/form-type.enum";
+import { FormArrayField } from "./form-array-field.interface";
 
 
-export interface StepMetaData {
-	stepNumber: number,
-	stepName: string,
-	formFields: FormField[],
-	stepFormGroup: FormGroup,
-	// isFormValid: boolean,
+export interface FormStepMetaData {
+	stepIndex: number,
+	stepTitle: string,
+	fields: FormField[],
+	formGroup: FormGroup,
 	isInitialStep: boolean,
-	isFinalStep: boolean
+	isFinalStep: boolean,
+	formType: FormType,
+	formArrayFields?: FormArrayField[]
 }
+
 
 
