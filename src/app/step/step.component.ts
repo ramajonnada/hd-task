@@ -12,6 +12,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { FormType } from '../_/enums/form-type.enum';
 import { MatButtonModule } from '@angular/material/button';
 import { FormField } from '../_/types/form-field.interface';
+import { FormDataService } from '../_/services/form-data.service';
 
 @Component({
   selector: 'app-step',
@@ -31,7 +32,10 @@ export class StepComponent {
   @Output('next') next: EventEmitter<any> = new EventEmitter();
   @Output('previous') previous: EventEmitter<any> = new EventEmitter();
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private formDataService: FormDataService
+  ) {}
 
   ngOnChanges() {
     if (!this.step) return;
@@ -117,7 +121,7 @@ export class StepComponent {
 
   $$next() {
     if (this.step.formGroup.valid) {
-      this.saveFormData();
+      this._cacheFormData();
       this.next.emit();
     } else {
       alert('Please fill in all required fields.');
@@ -128,12 +132,16 @@ export class StepComponent {
     this.previous.emit();
   }
 
-  saveFormData() {
+  private _cacheFormData() {
     localStorage.setItem(
       `step-${this.step.stepIndex}`,
       JSON.stringify(this.step.formGroup.value)
     );
-    alert('Form data saved to Local Storage!');
+    this.formDataService.setFormData({
+      step: 1,
+      stepFromData: this.step.formGroup.value,
+    });
+    // alert('Form data saved to Local Storage!');
   }
 
   $$submit() {
