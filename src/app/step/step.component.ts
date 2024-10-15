@@ -133,12 +133,14 @@ export class StepComponent {
   }
 
   private _cacheFormData() {
+
+
     localStorage.setItem(
       `step-${this.step.stepIndex}`,
       JSON.stringify(this.step.formGroup.value)
     );
     this.formDataService.setFormData({
-      step: 1,
+      step: `step${this.step.stepIndex}`,
       stepFromData: this.step.formGroup.value,
     });
     // alert('Form data saved to Local Storage!');

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -7,16 +6,17 @@ import { FormGroup } from '@angular/forms';
 export class FormDataService {
   constructor() {}
 
-  private formData: { step: number; stepFromData: FormGroup } = {
-    step: 0,
-    stepFromData: new FormGroup({}),
-  };
+  private formData: { step: string; stepFromData: any }[] = [];
 
-  setFormData(data: { step: number; stepFromData: FormGroup }) {
-    this.formData = { ...data };
+  setFormData(data: { step: string; stepFromData: any }) {
+    const isExistingStepIndex = this.formData.findIndex((e) => {
+      return e.step === data.step;
+    });
+    if (isExistingStepIndex > -1) this.formData.splice(isExistingStepIndex, 1);
+
+    this.formData.push({ ...data });
   }
 
-  // Retrieve the stored form data
   getFormData() {
     return this.formData;
   }

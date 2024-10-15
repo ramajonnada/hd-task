@@ -1,5 +1,14 @@
 <mat-toolbar>
     Dash Board
 </mat-toolbar>
-{{companyData}}
-<!-- <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions"></highcharts-chart> -->
+<!-- <div *ngIf="formData" class="form-data">
+    <div *ngFor="let userstep of formData">
+        {{userstep.stepFromData | json}}
+
+        <hr>
+    </div>
+</div> -->
+<div class="flex-container">
+    <highcharts-chart id="chart" [Highcharts]="highcharts" [options]="graphChartOptions"></highcharts-chart>
+    <highcharts-chart id="chart" [Highcharts]="highcharts" [options]="experienceChartOptions"></highcharts-chart>
+</div>
